@@ -1,0 +1,74 @@
+# ===========================================
+# Laravel & PHP
+# ===========================================
+/vendor/
+/node_modules/
+.env
+.env.*
+!.env.example
+.phpunit.result.cache
+composer.lock
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ===========================================
+# Laravel specific
+# ===========================================
+/storage/*.key
+/storage/app/public/*
+!/storage/app/public/.gitignore
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+bootstrap/cache/*.php
+public/storage
+public/hot
+public/mix-manifest.json
+/public/js/*.map
+/public/css/*.map
+
+# ===========================================
+# IDEs & Editors
+# ===========================================
+.vscode/
+.idea/
+nbproject/
+*.sublime-workspace
+*.sublime-project
+
+# ===========================================
+# System Files
+# ===========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+*.tmp
+*.swp
+
+# ===========================================
+# Docker / CI
+# ===========================================
+.docker/
+docker-compose.override.yml
+.env.docker
+.env.testing
+.env.local
+.env.staging
+
+# ===========================================
+# Node / Frontend build
+# ===========================================
+/public/build/
+/public/vendor/
+/resources/js/*.map
+/resources/css/*.map
+
+# ===========================================
+# Tests / Coverage
+# ===========================================
+/coverage/
+/phpunit.xml.bak
+/.phpunit.cache
