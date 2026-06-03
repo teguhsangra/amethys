@@ -283,7 +283,7 @@ class BookingController extends Controller
                 $length_of_detail = 1;
                 break;
             case "hourly":
-                $total_booking = 1;
+                $total_booking = $booking->length_of_term;
                 $length_of_detail = $booking->length_of_term;
                 if ($booking->length_of_term_after_office > 0) {
                     $length_of_detail = $length_of_detail - $booking->length_of_term_after_office;
