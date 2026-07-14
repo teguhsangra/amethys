@@ -310,7 +310,7 @@
 			                                {{ $detail_proforma[$i]['quantity'] }}
 			                            </td>
 			                            <td class="text-right">
-			                                IDR {{number_format($detail_proforma[$i]['detail_price'], 0, '.', ',') }} <br>
+			                                IDR {{number_format($detail_proforma[$i]['detail_price']) }} <br>
 			                            </td>
 			                            <td class="text-right">
 			                                IDR {{number_format($detail_proforma[$i]['quantity'] * ($detail_proforma[$i]['detail_price']), 0, '.', ',')}} <br>
@@ -339,10 +339,10 @@
 			                                1
 			                            </td>
 			                            <td class="text-right">
-			                                IDR {{number_format($proforma->total_price, 0, '.', ',') }} <br>
+			                                IDR {{number_format($proforma->total_price) }} <br>
 			                            </td>
 			                            <td class="text-right">
-			                                IDR {{number_format($proforma->total_price, 0, '.', ',')}} <br>
+			                                IDR {{number_format($proforma->total_price)}} <br>
 			                            </td>
 			                        </tr>
 			                    @endif
@@ -360,10 +360,10 @@
 			                                1
 			                            </td>
 			                            <td class="text-right">
-			                                IDR {{number_format($proforma->total_price, 0, '.', ',') }} <br>
+			                                IDR {{number_format($proforma->total_price) }} <br>
 			                            </td>
 			                            <td class="text-right">
-			                                IDR {{number_format($proforma->total_price, 0, '.', ',')}} <br>
+			                                IDR {{number_format($proforma->total_price)}} <br>
 			                            </td>
 			                        </tr>
 			                    @endif
@@ -400,13 +400,13 @@
 		                                        @endphp
 
 
-			                                    {{ number_format($length_of_term, 0, ',', '.') }}
+			                                    {{ number_format($length_of_term) }}
 			                                </td>
 			                                <td class="text-right">
-			                                    IDR {{number_format($proforma->inquiry->detail_price, 0, ',', '.') }} <br>
+			                                    IDR {{number_format($proforma->inquiry->detail_price) }} <br>
 			                                </td>
 			                                <td class="text-right">
-			                                    IDR {{number_format($proforma->inquiry->detail_price * $length_of_term, 0, ',', '.')}} <br>
+			                                    IDR {{number_format($proforma->inquiry->detail_price * $length_of_term)}} <br>
 			                                </td>
 			                            </tr>
 			                            @if($proforma->inquiry->free_term_booking > 0)
@@ -420,13 +420,13 @@
 			                                        {{ date('j M Y', strtotime($proforma->inquiry->end_date)) }}
 			                                    </td>
 			                                    <td class="text-center">
-			                                        {{ number_format($proforma->inquiry->free_term_booking, 0, ',', '.') }}
+			                                        {{ number_format($proforma->inquiry->free_term_booking) }}
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format(0, 0, ',', '.') }} <br>
+			                                        IDR {{number_format(0) }} <br>
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format(0, 0, ',', '.')}} <br>
+			                                        IDR {{number_format(0)}} <br>
 			                                    </td>
 			                                </tr>
 			                            @endif
@@ -441,13 +441,13 @@
 			                                        {{ date('j M Y', strtotime($package->pivot->end_date)) }}
 			                                    </td>
 			                                    <td class="text-center">
-			                                        {{ number_format($package->pivot->length_of_term * $package->pivot->quantity, 0, ',', '.') }}
+			                                        {{ number_format($package->pivot->length_of_term * $package->pivot->quantity) }}
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format($package->pibot->detail_price, 0, ',', '.') }} <br>
+			                                        IDR {{number_format($package->pibot->detail_price) }} <br>
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format($package->pibot->detail_price * $package->pivot->length_of_term * $package->pivot->quantity, 0, ',', '.')}} <br>
+			                                        IDR {{number_format($package->pibot->detail_price * $package->pivot->length_of_term * $package->pivot->quantity)}} <br>
 			                                    </td>
 			                                </tr>
 			                            @endforeach
@@ -459,21 +459,8 @@
 			                                    </td>
 			                                    <td class="text-center">
 			                                        {{ date('j M Y', strtotime($proforma->inquiry->start_date)) }} -
-			                                        @if($proforma->inquiry->free_term_booking != null)
-			                                            @php
-			                                                $end_date = $proforma->inquiry->end_date;
-
-			                                                switch($proforma->inquiry->price_type){
-			                                                    case "monthly" :
-			                                                        $end_date = date('Y-m-d', strtotime("-".$proforma->inquiry->free_term_booking." months", strtotime($end_date)));
-			                                                    break;
-			                                                }
-			                                            @endphp
-			                                            {{ date('j M Y', strtotime($end_date)) }}
-			                                        @else
-			                                            {{ date('j M Y', strtotime($proforma->inquiry->end_date)) }}
-			                                        @endif
-			                                    </td>
+			                                    	{{ date('t M Y', strtotime($proforma->inquiry->start_date. '+' . ($proforma->inquiry->term_of_payment - 1) . ' months')) }}
+							    </td>
 			                                    <td class="text-center">
 			                                        @php
 			                                            $length_of_term = $proforma->inquiry->length_of_term;
@@ -483,13 +470,13 @@
 			                                            }
 			                                        @endphp
 
-			                                        {{ number_format($length_of_term, 0, ',', '.') }}
+			                                        {{ number_format($length_of_term) }}
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format($room->pivot->detail_price, 0, ',', '.') }} <br>
+			                                        IDR {{number_format($room->pivot->detail_price) }} <br>
 			                                    </td>
 			                                    <td class="text-right">
-			                                        IDR {{number_format($room->pivot->detail_price * $length_of_term, 0, ',', '.')}} <br>
+			                                        IDR {{number_format($room->pivot->detail_price * $length_of_term)}} <br>
 			                                    </td>
 			                                </tr>
 			                                @if($proforma->inquiry->free_term_booking > 0)
@@ -503,13 +490,13 @@
 			                                            {{ date('j M Y', strtotime($proforma->inquiry->end_date)) }}
 			                                        </td>
 			                                        <td class="text-center">
-			                                            {{ number_format($proforma->inquiry->free_term_booking, 0, ',', '.') }}
+			                                            {{ number_format($proforma->inquiry->free_term_booking) }}
 			                                        </td>
 			                                        <td class="text-right">
-			                                            IDR {{number_format(0, 0, ',', '.') }} <br>
+			                                            IDR {{number_format(0) }} <br>
 			                                        </td>
 			                                        <td class="text-right">
-			                                            IDR {{number_format(0, 0, ',', '.')}} <br>
+			                                            IDR {{number_format(0)}} <br>
 			                                        </td>
 			                                    </tr>
 			                                @endif
@@ -529,13 +516,13 @@
 			                                    @endif
 			                                </td>
 			                                <td class="text-center">
-			                                    {{ number_format($product->pivot->length_of_term * $product->pivot->quantity, 0, ',', '.') }}
+			                                    {{ number_format($product->pivot->length_of_term * $product->pivot->quantity) }}
 			                                </td>
 			                                <td class="text-right">
-			                                    IDR {{number_format($product->pivot->detail_price, 0, ',', '.') }} <br>
+			                                    IDR {{number_format($product->pivot->detail_price) }} <br>
 			                                </td>
 			                                <td class="text-right">
-			                                    IDR {{number_format($product->pivot->detail_price * $product->pivot->length_of_term * $product->pivot->quantity, 0, ',', '.')}} <br>
+			                                    IDR {{number_format($product->pivot->detail_price * $product->pivot->length_of_term * $product->pivot->quantity)}} <br>
 			                                </td>
 			                            </tr>
 			                        @endforeach
@@ -545,69 +532,78 @@
                                     <td colspan="5"><b>Sub Total</b></td>
                                     <td class="text-right"><b>IDR
                                     @if($proforma->inquiry_id != null)
-			                        {{ number_format($proforma->inquiry->total_price + $proforma->inquiry->total_additional_charge, 0, ',', '.') }}
+			                        {{ number_format(($proforma->inquiry->total_price / $proforma->inquiry->length_of_term * $proforma->inquiry->term_of_payment) + $proforma->inquiry->total_additional_charge) }}
 			                        @else
-			                        {{number_format($proforma->total_price, 0, '.', ',')}}
+			                        {{number_format($proforma->total_price)}}
 			                        @endif</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"><b>Service Charge</b></td>
-                                    <td class="text-right"><b>IDR {{number_format($proforma->total_service_charge, 0, '.', ',')}}</b></td>
+                                    <td class="text-right"><b>IDR {{number_format($proforma->total_service_charge)}}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"><b>Total</b></td>
                                     <td class="text-right"><b>IDR
                                     @if($proforma->inquiry_id != null)
-			                        {{ number_format($proforma->inquiry->total_price + $proforma->inquiry->total_additional_charge + $proforma->inquiry->total_service_charge_additional_charge, 0, ',', '.') }}
+			                        {{ number_format(($proforma->inquiry->total_price / $proforma->inquiry->length_of_term * $proforma->inquiry->term_of_payment) + $proforma->inquiry->total_additional_charge + $proforma->inquiry->total_service_charge_additional_charge) }}
 			                        @else
-			                        {{number_format($proforma->total_price + $proforma->total_service_charge, 0, '.', ',')}}
+			                        {{number_format($proforma->total_price + $proforma->total_service_charge)}}
 			                        @endif
 
                                     </b></td>
                                 </tr>
+				@if($proforma->total_price_on_tax > 0)
                                 <tr>
                                     <td colspan="5"><b>Tax Base for VAT</b></td>
                                     <td class="text-right"><b>IDR
-                                    {{number_format($proforma->total_price_on_tax, 0, '.', ',')}}
+                                    {{number_format($proforma->total_price_on_tax)}}
 
                                     </b></td>
                                 </tr>
+				@endif
                                 <tr>
                                     <td colspan="5"><b>Tax</b></td>
                                     <td class="text-right"><b>IDR
                                     @if($proforma->inquiry_id != null)
-			                        {{ number_format($proforma->inquiry->total_tax_price + $proforma->inquiry->total_tax_additional_charge, 0, ',', '.') }}
+			                        {{ number_format(($proforma->inquiry->total_tax_price / $proforma->inquiry->length_of_term * $proforma->inquiry->term_of_payment) + $proforma->inquiry->total_tax_additional_charge) }}
 			                        @else
-			                        {{number_format($proforma->total_tax_price, 0, '.', ',')}}
+			                        {{number_format($proforma->total_tax_price)}}
 			                        @endif
 
                                     </b></td>
                                 </tr>
                                 <!-- <tr>
                                     <td colspan="5"><b>Stamp Duty</b></td>
-                                    <td class="text-right"><b>IDR {{number_format($proforma->stamp_duty, 0, '.', ',')}}</b></td>
+                                    <td class="text-right"><b>IDR {{number_format($proforma->stamp_duty)}}</b></td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"><b>Round Price</b></td>
-                                    <td class="text-right"><b>IDR {{number_format($proforma->round_price, 0, '.', ',')}}</b></td>
+                                    <td class="text-right"><b>IDR {{number_format($proforma->round_price)}}</b></td>
                                 </tr> -->
                                 <tr>
                                     <td colspan="5"><b>Deposit</b></td>
-                                    <td class="text-right"><b>IDR {{number_format($proforma->total_deposit, 0, '.', ',')}}</b></td>
+                                    <td class="text-right"><b>IDR 
+										@if($proforma->inquiry)
+										   {{number_format($proforma->inquiry->security_deposit)}}
+										@else
+											{{number_format($proforma->total_deposit)}}
+										@endif
+										
+									</b></td>
                                 </tr>
                                   @if($proforma->has_deduction == 'Y')
                                 <tr>
                                     <td colspan="5"><b>Deduction Withholding Tax</b></td>
-                                    <td class="text-right"><b>IDR {{number_format($proforma->deduction_price, 0, '.', ',')}}</b></td>
+                                    <td class="text-right"><b>IDR {{number_format($proforma->deduction_price)}}</b></td>
                                 </tr>
                                 @endif
                                 <tr>
                                     <td colspan="5"><b>Grand Total</b></td>
                                     <td class="text-right"><b>IDR
                                     @if($proforma->inquiry_id != null)
-			                        {{ number_format($proforma->inquiry->total_price + $proforma->inquiry->total_additional_charge + $proforma->inquiry->total_service_charge_additional_charge + $proforma->inquiry->total_tax_price + $proforma->inquiry->total_tax_additional_charge + $proforma->stamp_duty + $proforma->round_price + $proforma->total_deposit-$proforma->deduction_price, 0, ',', '.') }}
+			                        {{ number_format(($proforma->inquiry->total_price / $proforma->inquiry->length_of_term * $proforma->inquiry->term_of_payment) + $proforma->inquiry->total_additional_charge + $proforma->inquiry->total_service_charge_additional_charge + ($proforma->inquiry->total_tax_price / $proforma->inquiry->length_of_term * $proforma->inquiry->term_of_payment) + $proforma->inquiry->total_tax_additional_charge + $proforma->stamp_duty + $proforma->round_price + $proforma->inquiry->security_deposit-$proforma->deduction_price) }}
 			                        @else
-                                    {{number_format($proforma->total_price + $proforma->total_service_charge + $proforma->total_tax_price + $proforma->stamp_duty + $proforma->round_price + $proforma->total_deposit - $proforma->deduction_price, 0, '.', ',')}}
+                                    {{number_format($proforma->total_price + $proforma->total_service_charge + $proforma->total_tax_price + $proforma->stamp_duty + $proforma->round_price + $proforma->total_deposit - $proforma->deduction_price)}}
 			                        @endif
                                     </b></td>
                                 </tr>
@@ -646,6 +642,29 @@
                             </table>
                             <br>
                         @endif
+
+						 <div class="mt-2 mb-4" style="font-size: 14px;">
+							<p class="fw-bold mb-1">Important Notice:</p>
+
+							<ol class="mb-0 ps-3">
+								<li class="mb-1">
+									If payment is made in full, the PPh 4(2) Withholding Tax Certificate must be submitted no later than the 10th day of the following month. Upon receipt and verification, Amethyst will refund the corresponding PPh 4(2) amount.
+								</li>
+
+								<li class="mb-1">
+									If the Withholding Tax Certificate is not received by the 10th day of the following month, Amethyst reserves the right to settle the tax using its own NPWP, and no refund will be processed.
+								</li>
+
+								<li class="mb-1">
+									For payments made with PPh 4(2) deduction, the Withholding Tax Certificate must also be submitted by the 10th day of the following month.
+								</li>
+
+								<li>
+									Failure to submit the required PPh 4(2) Withholding Tax Certificate by the 10th day of the following month may result in the suspension of services. Amethyst further reserves the right to cancel the transaction and refund any amount received from the client, less any applicable taxes already remitted to the tax authority. The client shall indemnify and hold Amethyst harmless against any costs, liabilities, losses, or expenses arising from such failure to provide the required documentation.
+								</li>
+							</ol>
+						</div>
+
                         <p>
                             Please send proof of your payments, and include Proforma Number stated above.<br>
                             Any dispute or correction must be informed to us within 5 days from this Proforma Date.
@@ -669,8 +688,8 @@
                 printWindow.print();
                 printWindow.close();
             }
-        }
-        var sched = setInterval(printAndClose, 800);
+	}
+	var sched = setInterval(printAndClose, 800);
     }
 </script>
 @endsection

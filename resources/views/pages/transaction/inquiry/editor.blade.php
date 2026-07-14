@@ -861,7 +861,7 @@ Rakomsis Inquiry - Editor
                                         </td>
                                         <td id="view_total_tax_price" class="text-right"></td>
                                     </tr>
-                                    <tr style="display:none">
+                                    <tr>
                                         <td colspan="4">Security Deposit</td>
                                         <td>
                                             <input type="text" id="format_security_deposit" class="form-control text-right" onchange="changeToCurrencyFormat('format_security_deposit','security_deposit');countPrice();" @if(empty($booking)) value="0" @else value="{{ number_format($booking->security_deposit, 0, ',', '.') }}" @endif>

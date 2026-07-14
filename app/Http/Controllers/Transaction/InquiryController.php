@@ -935,7 +935,7 @@ class InquiryController extends Controller
             $proforma->due_date = date("Y-m-d", strtotime($request['due_date']));
             $proforma->desc = $inquiry->remarks;
             $proforma->payment_status = "NP";
-
+	    $proforma->total_deposit = $inquiry->security_deposit;
             // Start : Counting price
             $total_additional_charge = 0;
             $total_service_charge_additional_charge = 0;
@@ -971,23 +971,20 @@ class InquiryController extends Controller
             if ($inquiry->term_of_payment != null) {
                 if ($inquiry->free_term_booking != null) {
 
-                    $proforma->total_price = $inquiry->total_price + $inquiry->total_additional_charge+$inquiry->total_service_charge_additional_charge;
+                    $proforma->total_price = ($inquiry->total_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_additional_charge+$inquiry->total_service_charge_additional_charge;
                     $proforma->total_service_charge = ($inquiry->total_service_charge / ($inquiry->length_of_term - $inquiry->free_term_booking)) * $inquiry->term_of_payment;
-                    $proforma->total_tax_price = $inquiry->total_tax_price + $inquiry->total_tax_additional_charge;
+                    $proforma->total_tax_price = ($inquiry->total_tax_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_tax_additional_charge;
 
                 } else {
-                    $proforma->total_price = $inquiry->total_price + $inquiry->total_additional_charge+$inquiry->total_service_charge_additional_charge;
+                    $proforma->total_price = ($inquiry->total_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_additional_charge+$inquiry->total_service_charge_additional_charge;
                     $proforma->total_service_charge = ($inquiry->total_service_charge / $inquiry->length_of_term) * $inquiry->term_of_payment;
-                    $proforma->total_tax_price = $inquiry->total_tax_price + $inquiry->total_tax_additional_charge;
+                    $proforma->total_tax_price = ($inquiry->total_tax_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_tax_additional_charge;
                 }
             } else {
                 $proforma->total_price = $inquiry->total_price;
                 $proforma->total_service_charge = $inquiry->total_service_charge;
                 $proforma->total_tax_price = $inquiry->total_tax_price;
             }
-            $proforma->total_price = $proforma->total_price + $inquiry->total_additional_charge;
-            $proforma->total_service_charge = $proforma->total_service_charge + $inquiry->total_service_charge_additional_charge;
-            $proforma->total_tax_price = $proforma->total_tax_price + $inquiry->total_tax_additional_charge;
             // End : Counting price
 
             if ($proforma->save()) {

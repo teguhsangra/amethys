@@ -446,6 +446,27 @@ Rakomsis Invoice - {{ $invoice->code }}
                             </table>
                             <br>
                         @endif
+                        <div class="mt-2 mb-4" style="font-size: 14px;">
+                <p class="fw-bold mb-1">Important Notice:</p>
+
+                <ol class="mb-0 ps-3">
+                    <li class="mb-1">
+                        If payment is made in full, the PPh 4(2) Withholding Tax Certificate must be submitted no later than the 10th day of the following month. Upon receipt and verification, Amethyst will refund the corresponding PPh 4(2) amount.
+                    </li>
+
+                    <li class="mb-1">
+                        If the Withholding Tax Certificate is not received by the 10th day of the following month, Amethyst reserves the right to settle the tax using its own NPWP, and no refund will be processed.
+                    </li>
+
+                    <li class="mb-1">
+                        For payments made with PPh 4(2) deduction, the Withholding Tax Certificate must also be submitted by the 10th day of the following month.
+                    </li>
+
+                    <li>
+                        Failure to submit the required PPh 4(2) Withholding Tax Certificate by the 10th day of the following month may result in the suspension of services. Amethyst further reserves the right to cancel the transaction and refund any amount received from the client, less any applicable taxes already remitted to the tax authority. The client shall indemnify and hold Amethyst harmless against any costs, liabilities, losses, or expenses arising from such failure to provide the required documentation.
+                    </li>
+                </ol>
+            </div>
                         <p>
                             Please send proof of your payments, and include Invoice Number stated above.<br>
                             Any dispute or correction must be informed to us within 5 days from this Invoice Date.

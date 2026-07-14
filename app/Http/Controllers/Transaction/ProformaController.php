@@ -753,12 +753,7 @@ class ProformaController extends Controller
 
         return DataTables::of($proformas)
             ->editColumn('total_proforma', function ($data) {
-            	if($data->inquiry_id != null){
-            		return number_format($data->inquiry->total_price + $data->inquiry->total_additional_charge + $data->inquiry->total_service_charge_additional_charge + $data->inquiry->total_tax_price + $data->inquiry->total_tax_additional_charge + $data->stamp_duty + $data->round_price + $data->total_deposit, 0, ',', '.');
-            	}else{
-            	    return number_format($data->total_price + $data->total_service_charge + $data->total_tax_price + $data->stamp_duty + $data->round_price, 0, ',', '.');
-            	}
-                
+            	return number_format($data->total_price + $data->total_service_charge + $data->total_tax_price + $data->stamp_duty + $data->total_deposit + $data->round_price, 0, ',', '.'); 
             })
             ->make(true);
     }

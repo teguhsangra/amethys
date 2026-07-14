@@ -159,10 +159,9 @@
                 </tr>
                 <tr class="text-center">
                     <td width="20%"><b>Inquiries</b></td>
-                    <td width="15%"><b>Length of Term</b></td>
                     <td width="15%"><b>Quantity</b></td>
-                    <td width="25%"><b>Detail Price</b></td>
-                    <td width="25%" ><b>Total</b></td>
+                    <td width="25%" colspan="2"><b>Detail Price</b></td>
+                    <td width="25%"><b>Total</b></td>
                 </tr>
                 <tr>
                     <td style="padding-top: 10px;padding-bottom: 10px;">
@@ -181,7 +180,7 @@
                     @endif
                     </td>
                     <td style="padding-top: 10px;padding-bottom: 10px;" class="text-center">
-                        {{ $inquiry->length_of_term }} @if($inquiry->free_term_booking != null) (-{{ $inquiry->free_term_booking }}) @endif
+                        {{ $inquiry->term_of_payment }} @if($inquiry->free_term_booking != null) (-{{ $inquiry->free_term_booking }}) @endif
                         @if($inquiry->price_type == 'yearly')
                             Year(s)
                         @elseif($inquiry->price_type == 'monthly')
@@ -192,44 +191,41 @@
                             Hours(s)
                         @endif
                     </td>
-                    <td class="text-center" style="padding-top: 10px;padding-bottom: 10px;">
-                        {{ $inquiry->quantity }}
-                    </td>
-                    <td class="text-right" style="padding-top: 10px;padding-bottom: 10px;">
+                    <td class="text-right" style="padding-top: 10px;padding-bottom: 10px;" colspan="2">
                     @if($inquiry->type == 'package')
                         @foreach($inquiry->packages as $packages)
                             @if($inquiry->tax_status == "include")
                                 @if($inquiry->service_charge_status == "Y")
-                                    {{ $default_currency }} {{ number_format($packages->pivot->detail_price / ((1 + $service_charge) * (1 + $tax_percentage)), 0, ',', '.') }} <br>
+                                    {{ $default_currency }} {{ number_format($packages->pivot->detail_price / ((1 + $service_charge) * (1 + $tax_percentage))) }} <br>
                                 @else
-                                    {{ $default_currency }} {{ number_format($packages->pivot->detail_price / (1 + $tax_percentage), 0, ',', '.') }} <br>
+                                    {{ $default_currency }} {{ number_format($packages->pivot->detail_price / (1 + $tax_percentage)) }} <br>
                                 @endif
                             @else
-                                {{ $default_currency }} {{ number_format($packages->pivot->detail_price, 0, ',', '.') }} <br>
+                                {{ $default_currency }} {{ number_format($packages->pivot->detail_price) }} <br>
                             @endif
                         @endforeach
                     @endif
                     @if($inquiry->type == 'product')
                         @if($inquiry->tax_status == "include")
                             @if($inquiry->service_charge_status == "Y")
-                                {{ $default_currency }} {{ number_format($inquiry->detail_price / ((1 + $service_charge) * (1 + $tax_percentage)), 0, ',', '.') }}
+                                {{ $default_currency }} {{ number_format($inquiry->detail_price / ((1 + $service_charge) * (1 + $tax_percentage))) }}
                             @else
-                                {{ $default_currency }} {{ number_format($inquiry->detail_price / (1 + $tax_percentage), 0, ',', '.') }}
+                                {{ $default_currency }} {{ number_format($inquiry->detail_price / (1 + $tax_percentage)) }}
                             @endif
                         @else
-                            {{ $default_currency }} {{ number_format($inquiry->detail_price, 0, ',', '.') }}
+                            {{ $default_currency }} {{ number_format($inquiry->detail_price) }}
                         @endif
                     @endif
                     @if($inquiry->type == 'room')
                         @foreach($inquiry->rooms as $rooms)
                             @if($inquiry->tax_status == "include")
                                 @if($inquiry->service_charge_status == "Y")
-                                    {{ $default_currency }} {{ number_format($rooms->pivot->detail_price / ((1 + $service_charge) * (1 + $tax_percentage)), 0, ',', '.') }} <br>
+                                    {{ $default_currency }} {{ number_format($rooms->pivot->detail_price / ((1 + $service_charge) * (1 + $tax_percentage))) }} <br>
                                 @else
-                                    {{ $default_currency }} {{ number_format($rooms->pivot->detail_price / (1 + $tax_percentage), 0, ',', '.') }} <br>
+                                    {{ $default_currency }} {{ number_format($rooms->pivot->detail_price / (1 + $tax_percentage)) }} <br>
                                 @endif
                             @else
-                                {{ $default_currency }} {{ number_format($rooms->pivot->detail_price, 0, ',', '.') }} <br>
+                                {{ $default_currency }} {{ number_format($rooms->pivot->detail_price) }} <br>
                             @endif
                         @endforeach
                     @endif
@@ -251,7 +247,7 @@
                                 $sub_total_main = $sub_total_main + $inquiry->detail_price * $inquiry->quantity * $length_of_term;
                             }
 
-                            $total_price = $total_price + $sub_total_main;
+                            $total_price = ($inquiry->total_price / $inquiry->length_of_term * $inquiry->term_of_payment);
                             if($inquiry->tax_status == "include"){
                                 if($inquiry->service_charge_status == "Y"){
                                     $total_price = $total_price / ((1 + $service_charge) * (1 + $tax_percentage));
@@ -262,15 +258,15 @@
                             }
                         @endphp
 
-                    {{ $default_currency }} {{ number_format($total_price, 0, ',', '.') }}
+                    {{ $default_currency }} {{ number_format($total_price) }}
                     </td>
                 </tr>
                 <tr>
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
-                    <b>Discount @if($inquiry->usable_discount == "percentage")<span class="text-right">({{number_format($inquiry->discount_percentage, 0, ',', '.')}}%)</span>@endif</b>
+                    <b>Discount @if($inquiry->usable_discount == "percentage")<span class="text-right">({{number_format($inquiry->discount_percentage)}}%)</span>@endif</b>
                     </td>
                     <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;">
-                        <b>{{ $default_currency }} {{ number_format($discount_price, 0, ',', '.') }}</b>
+                        <b>{{ $default_currency }} {{ number_format($discount_price) }}</b>
                     </td>
                 </tr>
                 <tr>
@@ -280,11 +276,11 @@
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
                         <b>Total After Discount</b>
                     </td>
-                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($total_price, 0, ',', '.') }}</b></td>
+                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($total_price) }}</b></td>
                 </tr>
                 <tr>
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
-                        <b>Service Charge<span class="text-right">({{ number_format($service_charge * 100, 0, ',', '.') }}%)</span></b>
+                        <b>Service Charge<span class="text-right">({{ number_format($service_charge * 100) }}%)</span></b>
                     </td>
                     <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($inquiry->total_service_charge) }}</b></td>
                 </tr>
@@ -295,7 +291,7 @@
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
                         <b>Total After Service Charge</b>
                     </td>
-                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($total_price, 0, ',', '.') }}</b></td>
+                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($total_price) }}</b></td>
                 </tr>
                 @php
                     $total_additional_charge = 0;
@@ -329,28 +325,28 @@
                     @endphp
                 <tr>
                     <td colspan="2"><b>Additional Charge</b> - {{ $product->name }}</td>
-                    <td class="text-center">{{ number_format($product->pivot->quantity, 0, ',', '.') }}</td>
-                    <td class="text-right" class="text-center">{{ $default_currency }} {{number_format($detail_price, 0, ',', '.')}}</td>
-                    <td class="text-right"><b> {{ $default_currency }} {{ number_format($sub_total, 0, ',', '.') }} </b></td>
+                    <td class="text-center">{{ number_format($product->pivot->quantity) }}</td>
+                    <td class="text-right" class="text-center">{{ $default_currency }} {{number_format($detail_price)}}</td>
+                    <td class="text-right"><b> {{ $default_currency }} {{ number_format($sub_total) }} </b></td>
                 </tr>
                 @endforeach
                 <tr>
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
-                        <b>VAT<span class="text-right">({{ number_format($tax_percentage * 100, 0, ',', '.') }}%)</span></b>
+                        <b>VAT<span class="text-right">({{ number_format($tax_percentage * 100) }}%)</span></b>
                     </td>
-                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($inquiry->total_tax_price + $inquiry->total_tax_additional_charge, 0, ',', '.') }}</b></td>
+                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format(($inquiry->total_tax_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_tax_additional_charge) }}</b></td>
                 </tr>
                 <tr>
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
                     <b>Security Deposit</b>
                     </td>
-                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($inquiry->security_deposit, 0, ',', '.') }}</b></td>
+                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($inquiry->security_deposit) }}</b></td>
                 </tr>
                 <tr>
                     <td style="padding-top: 1px;padding-bottom: 1px;" colspan="4">
                         <b>Grand Total</b>
                     </td>
-                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format($inquiry->total_price + $inquiry->total_service_charge + $inquiry->total_tax_price + $total_additional_charge + $inquiry->total_service_charge_additional_charge + $inquiry->total_tax_additional_charge + $inquiry->security_deposit + $inquiry->stamp_duty + $inquiry->round_price, 0, ',', '.') }}</b></td>
+                    <td class="text-right" style="padding-top: 1px;padding-bottom: 1px;"> <b> {{ $default_currency }} {{ number_format(($inquiry->total_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $inquiry->total_service_charge + ($inquiry->total_tax_price / $inquiry->length_of_term * $inquiry->term_of_payment) + $total_additional_charge + $inquiry->total_service_charge_additional_charge + $inquiry->total_tax_additional_charge + $inquiry->security_deposit + $inquiry->stamp_duty + $inquiry->round_price) }}</b></td>
                 </tr>
             </table>
             <p style="text-align: justify;">

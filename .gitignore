@@ -26,6 +26,7 @@ bootstrap/cache/*.php
 public/storage
 public/hot
 public/mix-manifest.json
+/public/uploads
 /public/js/*.map
 /public/css/*.map
 
